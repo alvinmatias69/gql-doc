@@ -5,7 +5,7 @@ var query = `
 `
 
 var queryType = `
-# Query to get Affiliate Explore Page
+# Query to get user images by ID
 type Images {
 	data: [String]
 }

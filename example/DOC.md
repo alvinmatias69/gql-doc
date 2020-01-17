@@ -35,7 +35,7 @@
 
 <a name="Images"></a>
 #### Images
-> Query to get Affiliate Explore Page
+> Query to get user images by ID
 
 
 | Field | Type | Label | Description |
