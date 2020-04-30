@@ -13,7 +13,7 @@ var funcNameRgx = regexp.MustCompile(`^[a-zA-Z]+`)
 var paramRgx = regexp.MustCompile(`\([a-zA-Z:, !\[\]]+\)`)
 var returnRgx = regexp.MustCompile(`[a-zA-Z]+(!)*$`)
 var typeRgx = regexp.MustCompile(`[a-zA-Z]+`)
-var varTypeRgx = regexp.MustCompile(`type [a-zA-Z]+( )*{`)
+var varTypeRgx = regexp.MustCompile(`(type|input) [a-zA-Z]+( )*{`)
 var varTypeNameRgx = regexp.MustCompile(`[a-zA-Z]+( )*{`)
 var commentRgx = regexp.MustCompile(`(#)+(.)*`)
 
