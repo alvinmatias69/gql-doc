@@ -1,4 +1,4 @@
-package main
+package templating
 
 import (
 	"bytes"
@@ -7,36 +7,35 @@ import (
 	"path"
 	"runtime"
 	"text/template"
+
+	"github.com/alvinmatias69/gql-doc/entity"
 )
 
-const JSONType = "json"
-const MarkdownType = "markdown"
-const MarkdownPath = "/template/md.tmpl"
-const HTMLType = "html"
-const HTMLPath = "/template/html.tmpl"
+const markdownPath = "/template/md.tmpl"
+const htmlPath = "/template/html.tmpl"
 
-func execToTemplate(data GQLDoc, tmplType string) (string, error) {
+func ToTemplate(data entity.GQLDoc, tmplType entity.Template) (string, error) {
 	_, b, _, _ := runtime.Caller(0)
 	basePath := path.Join(path.Dir(b))
-	tmplPath := tmplType
+	tmplPath := string(tmplType)
 
 	switch tmplType {
-	case JSONType:
+	case entity.JSON:
 		byteData, err := json.Marshal(data)
 		return string(byteData), err
 
-	case MarkdownType:
-		tmplPath = path.Join(basePath, MarkdownPath)
+	case entity.Markdown:
+		tmplPath = path.Join(basePath, markdownPath)
 
-	case HTMLType:
-		tmplPath = path.Join(basePath, HTMLPath)
+	case entity.HTML:
+		tmplPath = path.Join(basePath, htmlPath)
 
 	default:
 		dir, err := os.Getwd()
 		if err != nil {
 			return "", err
 		}
-		tmplPath = path.Join(dir, "/", tmplType)
+		tmplPath = path.Join(dir, "/", tmplPath)
 	}
 
 	tmpl, err := template.ParseFiles(tmplPath)

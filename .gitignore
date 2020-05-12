@@ -10,5 +10,8 @@
 # Unignore Makefile
 !Makefile
 
+# Unignore Test Data
+!./test_data/*
+
 # ignore test coverage map
 *.out

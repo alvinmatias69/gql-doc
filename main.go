@@ -6,12 +6,16 @@ import (
 	"log"
 	"os"
 	"path"
+
+	"github.com/alvinmatias69/gql-doc/entity"
+	"github.com/alvinmatias69/gql-doc/parser"
+	"github.com/alvinmatias69/gql-doc/templating"
 )
 
 func main() {
 	var inputPath = flag.String("ip", "./", "Input path")
 	var out = flag.String("out", "", "Output path")
-	var template = flag.String("template", JSONType, "Template path")
+	var template = flag.String("template", string(entity.JSON), "Template path")
 	var isHelp = flag.Bool("help", false, "Show help")
 	flag.Parse()
 
@@ -25,23 +29,23 @@ func main() {
 		log.Println(err)
 	}
 
-	query, err := parse(path.Join(dir, "/", *inputPath, "queries.go"))
+	query, err := parser.Parse(path.Join(dir, "/", *inputPath, "queries.go"))
 	if err != nil {
 		log.Println(err)
 	}
 
-	mutation, err := parse(path.Join(dir, "/", *inputPath, "mutations.go"))
+	mutation, err := parser.Parse(path.Join(dir, "/", *inputPath, "mutations.go"))
 	if err != nil {
 		log.Println(err)
 	}
 
-	doc := GQLDoc{
+	doc := entity.GQLDoc{
 		Name:     query.Name,
 		Query:    &query,
 		Mutation: &mutation,
 	}
 
-	result, err := execToTemplate(doc, *template)
+	result, err := templating.ToTemplate(doc, entity.Template(*template))
 	if err != nil {
 		log.Println(err)
 	}

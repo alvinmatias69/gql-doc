@@ -10,4 +10,17 @@ type Images {
 	data: [String]
 }
 
+# Data of given image
+input Data {
+	# Image of given data
+	image: String!
+}
+
+# Compression enumeration
+enum Compression {
+	# Not cold
+	HOT
+	# Not hot
+	COLD
+}
 `
