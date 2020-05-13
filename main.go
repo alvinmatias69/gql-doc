@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 
 	"github.com/alvinmatias69/gql-doc/entity"
 	"github.com/alvinmatias69/gql-doc/parser"
@@ -14,7 +15,7 @@ import (
 
 func main() {
 	var inputPath = flag.String("ip", "./", "Input path")
-	var out = flag.String("out", "", "Output path")
+	var outputPath = flag.String("out", "", "Output path")
 	var template = flag.String("template", string(entity.JSON), "Template path")
 	var isHelp = flag.Bool("help", false, "Show help")
 	flag.Parse()
@@ -24,17 +25,14 @@ func main() {
 		return
 	}
 
-	dir, err := os.Getwd()
+	inPath := resolvePath(*inputPath)
+
+	query, err := parser.Parse(path.Join(inPath, "queries.go"))
 	if err != nil {
 		log.Println(err)
 	}
 
-	query, err := parser.Parse(path.Join(dir, "/", *inputPath, "queries.go"))
-	if err != nil {
-		log.Println(err)
-	}
-
-	mutation, err := parser.Parse(path.Join(dir, "/", *inputPath, "mutations.go"))
+	mutation, err := parser.Parse(path.Join(inPath, "mutations.go"))
 	if err != nil {
 		log.Println(err)
 	}
@@ -50,7 +48,8 @@ func main() {
 		log.Println(err)
 	}
 
-	write(result, *out)
+	outPath := resolvePath(*outputPath)
+	write(result, outPath)
 }
 
 func showUsage() {
@@ -74,4 +73,9 @@ func showUsage() {
 		"\tgqldoc -ip=affiliate -out=doc.json\n" +
 		"\tgqldoc -ip=affiliate -out=doc.md -template=custom-md.tmpl\n"
 	fmt.Println(usage)
+}
+
+func resolvePath(param string) string {
+	param = os.ExpandEnv(param)
+	return filepath.Clean(param)
 }

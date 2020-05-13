@@ -2,7 +2,6 @@ package parser
 
 import (
 	"bufio"
-	"log"
 	"os"
 	"strings"
 
@@ -39,12 +38,10 @@ func Parse(path string) (entity.Doc, error) {
 			comment += cmt.Extract(current)
 
 		case variable.Match(current):
-			log.Println("var enum: ", current)
 			variables = append(variables, iterVariable(current, comment, scanner))
 			comment = ""
 
 		case function.Match(current):
-			log.Println("function: ", current)
 			functions = append(functions, function.Extract(current, strings.TrimSpace(comment)))
 			comment = ""
 

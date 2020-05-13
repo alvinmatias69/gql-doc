@@ -8,7 +8,7 @@ import (
 )
 
 func write(data, path string) error {
-	if len(path) == 0 {
+	if path == "." {
 		fmt.Println(data)
 	}
 
