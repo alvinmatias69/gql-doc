@@ -224,6 +224,30 @@ func Test_parse(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "success read enum with underscore",
+			args: args{
+				path: "./test_data/enum_with_underscore_type",
+			},
+			want: entity.Doc{
+				Name: "test_data",
+				Types: []entity.VarType{
+					{
+						Name: "Response",
+						Parameters: []entity.Parameter{
+							{
+								Name:    "SUCCESS_RESPONSE",
+								Comment: "SUCCESS response",
+							},
+							{
+								Name:    "FAILURE_RESPONSE",
+								Comment: "FAILURE response",
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

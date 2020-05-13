@@ -18,7 +18,7 @@ type Variable struct {
 var (
 	regex   = regexp.MustCompile(`(type|input|enum) [a-zA-Z]+( )*{`)
 	nameRgx = regexp.MustCompile(`[a-zA-Z]+( )*{`)
-	enumRgx = regexp.MustCompile(`^[a-zA-Z]+$`)
+	enumRgx = regexp.MustCompile(`^([a-zA-Z]+(_)*)+$`)
 )
 
 func Match(data string) bool {
