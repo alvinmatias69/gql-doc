@@ -8,6 +8,7 @@ import (
 	"github.com/alvinmatias69/gql-doc/entity"
 	cmt "github.com/alvinmatias69/gql-doc/parser/comment"
 	"github.com/alvinmatias69/gql-doc/parser/function"
+	"github.com/alvinmatias69/gql-doc/parser/union"
 	"github.com/alvinmatias69/gql-doc/parser/variable"
 )
 
@@ -36,6 +37,10 @@ func Parse(path string) (entity.Doc, error) {
 
 		case cmt.Match(current):
 			comment += cmt.Extract(current)
+
+		case union.Match(current):
+			variables = append(variables, union.Extract(current, strings.TrimSpace(comment)))
+			comment = ""
 
 		case variable.Match(current):
 			variables = append(variables, iterVariable(current, comment, scanner))

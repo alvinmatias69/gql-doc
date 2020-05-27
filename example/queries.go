@@ -23,4 +23,7 @@ enum Compression {
 	# Not hot
 	COLD
 }
+
+# ImageQuery type
+union ImageQuery = Min | Meta | Complete
 `

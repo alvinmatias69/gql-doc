@@ -248,6 +248,32 @@ func Test_parse(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "success read union",
+			args: args{
+				path: "./test_data/union",
+			},
+			want: entity.Doc{
+				Name: "test_data",
+				Types: []entity.VarType{
+					{
+						Name:    "ImageQuery",
+						Comment: "union ansemble",
+						Parameters: []entity.Parameter{
+							{
+								Name: "min",
+							},
+							{
+								Name: "meta",
+							},
+							{
+								Name: "complete",
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
