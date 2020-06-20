@@ -1,0 +1,136 @@
+h1.gqlDocumentation
+
+h2.Table of Contents
+
+
+
+h3.Queries
+
+* [getImages|#getImages]
+
+
+
+
+
+
+
+
+h3.Types
+
+* [Images|#Images]
+
+* [Data|#Data]
+
+* [Compression|#Compression]
+
+* [ImageQuery|#ImageQuery]
+
+
+
+
+h2.Queries
+
+
+
+h3.getImages
+
+
+h4.Definition
+||Return Type|[Images|#Images]|
+||Scalar|No|
+||Nullable|No|
+||List|No|
+
+h4.Parameters
+|| Name || Type ||
+|id|[Int|#Int]|
+
+
+h4.Example
+||Request||Response||
+| getImages (
+⠀⠀id: \[
+⠀⠀⠀⠀1
+⠀⠀]
+) \{\\⠀⠀data \\ }\\ | \{
+⠀⠀"getImages": \{
+⠀⠀⠀⠀"data": \[
+⠀⠀⠀⠀⠀⠀"Hello"
+⠀⠀⠀⠀]
+⠀⠀}
+} |
+
+
+
+
+
+
+
+
+h2.Types
+
+
+h3.Images
+
+_Query to get user images by ID_
+
+\\
+*Variant:* {{Object}}
+
+h4.Properties
+
+||Name||Type||Scalar||Nullable||List||Description||
+|data|String|Yes|Yes|Yes| |
+
+
+
+
+h3.Data
+
+_Data of given image_
+
+\\
+*Variant:* {{Input}}
+
+h4.Properties
+
+||Name||Type||Scalar||Nullable||List||Description||
+|image|String|Yes|No|No|Image of given data |
+
+
+
+
+h3.Compression
+
+_Compression enumeration_
+
+\\
+*Variant:* {{Enum}}
+
+h4.Properties
+
+||Name||Description||
+|HOT|Not cold |
+|COLD|Not hot |
+
+
+
+
+h3.ImageQuery
+
+_ImageQuery type_
+
+\\
+*Variant:* {{Union}}
+
+h4.Properties
+
+||Name||Description||
+|Min| |
+|Meta| |
+|Complete| |
+
+
+
+
+
