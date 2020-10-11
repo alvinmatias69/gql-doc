@@ -3,15 +3,18 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
+
+	"github.com/rs/zerolog/log"
 )
 
 func write(data, path string) error {
-	if path == "." {
+	if len(path) == 0 {
 		fmt.Println(data)
+		return nil
 	}
 
+	log.Info().Msgf("Opening output file: %s", path)
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -24,11 +27,6 @@ func write(data, path string) error {
 		return err
 	}
 
-	err = w.Flush()
-	if err != nil {
-		return err
-	}
-
-	log.Printf("success write %d bytes in %s\n", n, path)
-	return nil
+	log.Info().Msgf("Writing %d lines into file", n)
+	return w.Flush()
 }

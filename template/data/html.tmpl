@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>test</title>
+        <style>
+            body {
+                color: rgb(14, 17, 17);
+            }
+            #main {
+                margin: 0 auto;
+                width: 50%;
+                padding-bottom: 2em;
+            }
+            h2 {
+                margin-top: 3em;
+                margin-bottom: 0em;
+            }
+            h3 {
+                margin-top: 3em;
+            }
+            #toc {
+                position: fixed;
+                border: solid rgba(14, 17, 17, 0.25);
+                background-color: rgba(14, 17, 17, 0.05);
+                border-radius: 5%;
+                border-width: 1px;
+                padding: 2em;
+                padding-top: 0.5em;
+                margin-left: 1em;
+                max-width: 15%;
+            }
+            #toc .list {
+                padding-left: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            #toc li {
+                margin-top: 0.7em;
+                margin-bottom: 0.7em;
+            }
+            #toc h3 {
+                margin-top: 1em;
+            }
+            #toc b {
+                margin-top: 1em;
+            }
+            a {
+                color: rgb(14, 17, 17);
+            }
+            a:hover {
+                font-weight: 600;
+            }
+            a:active {
+                color: #FFF;
+            }
+            .comment {
+                font-style: italic;
+                color: rgba(14, 17, 17, 0.5);
+                font-size: small;
+            }
+            .definition th {
+                text-align: left;
+                font-weight: 500;
+                padding-bottom: 1em;
+            }
+            .definition td {
+                padding-left: 1em;
+                padding-bottom: 1em;
+            }
+            .parameters, .properties {
+                table-layout: fixed;
+                width: 100%;
+                border-collapse: collapse;
+                border-radius: 5%;
+            }
+            .properties {
+                margin-top: 1em;
+            }
+            .parameters th, .properties th {
+                text-align: left;
+                background-color: rgba(14, 17, 17, 0.1);
+            }
+            .parameters thead th:nth-child(1) {
+                width: 30%;
+            }
+            .parameters thead th:nth-child(2) {
+                width: 40%;
+            }
+            .parameters thead th:nth-child(3) {
+                width: 15%;
+            }
+            .parameters thead th:nth-child(4) {
+                width: 15%;
+            }
+            .parameters th, .parameters td, .properties th, .properties td {
+                padding: 20px;
+            }
+            .parameters tbody tr:nth-child(odd), .properties tbody tr:nth-child(odd) {
+                background-color: rgba(14, 17, 17, 0.01);
+            }
+            .parameters tbody tr:nth-child(even), .properties tbody tr:nth-child(even) {
+                background-color: rgba(14, 17, 17, 0.05);
+            }
+            .properties thead th:nth-child(1) {
+                width: 15%;
+            }
+            .properties thead th:nth-child(2) {
+                width: 35%;
+            }
+            .properties thead th:nth-child(3) {
+                width: 7%;
+            }
+            .properties thead th:nth-child(4) {
+                width: 8%;
+            }
+            .properties thead th:nth-child(5) {
+                width: 7%;
+            }
+            .properties thead th:nth-child(6) {
+                width: 25%;
+            }
+            .example {
+                display: flex;
+            }
+            .example div {
+                flex: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="toc">
+            <h3>Contents</h3>
+            {{$queries := .Queries}}
+            {{if $queries}}
+                <b>Queries</b>
+                <ul class="list">
+                    {{range $queries}}
+                        <li><a href="#{{.Name}}">{{.Name}}</a></li>
+                    {{end}}
+                </ul>
+            {{end}}
+
+            {{$mutations := .Mutations}}
+            {{if $mutations}}
+                <b>Mutations</b>
+                <ul class="list">
+                    {{range $mutations}}
+                        <li><a href="#{{.Name}}">{{.Name}}</a></li>
+                    {{end}}
+                </ul>
+            {{end}}
+        </div>
+        <div id="main">
+            <h1>{{.Name}} GQL Documentations</h1>
+            
+
+            {{if $queries}}
+                <h2>Queries</h2>
+                {{range $queries}}
+                    <h3 id="{{.Name}}">{{.Name}}</h3>
+                    {{if .Comment}}
+                        <span class="comment">{{.Comment}}</span>
+                    {{end}}
+
+                    <h4>Definition</h4>
+                    <table class="definition">
+                        <tr>
+                            <th>Return Type</th>
+                            <td>{{if .IsScalar}}{{.Type}}{{else}}<a href="#{{.Type}}">{{.Type}}</a>{{end}}</td>
+                        </tr>
+                        <tr>
+                            <th>Scalar</th>
+                            <td>{{if .IsScalar}}Yes{{else}}No{{end}}
+                        </tr>
+                        <tr>
+                            <th>Nullable</th>
+                            <td>{{if .IsNullable}}Yes{{else}}No{{end}}</td>
+                        </tr>
+                        <tr>
+                            <th>List</th>
+                            <td>{{if .IsList}}Yes{{else}}No{{end}}</td>
+                        </tr>
+                    </table>
+
+                    {{if .Parameters}}
+                        <h4>Parameters</h4>
+                        <table class="parameters">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>List?</th>
+                                    <th>Nullable?</th>
+                                </tr>
+                            </thead>
+                            {{range .Parameters}}
+                            <tbody>
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                    <td>{{if .IsScalar}}{{.Type}}{{else}}<a href="#{{.Type}}">{{.Type}}</a>{{end}}</td>
+                                    <td>{{if .IsList}}Yes{{else}}No{{end}}</td>
+                                    <td>{{if .IsNullable}}Yes{{else}}No{{end}}</td>
+                                </tr>
+                            </tbody>
+                            {{end}}
+                        </table>
+                    {{end}}
+
+                    {{if or .Example.Request .Example.Response}}
+                        <h4>Example</h4>
+                        <details>
+                            <summary>Request and response</summary>
+                            <div class="example">
+                                <div>
+                                    <pre>
+{{.Example.Request}}
+                                    </pre>
+                                </div>
+                                <div>
+                                    <pre>
+{{.Example.Response}}
+                                    </pre>
+                                </div>
+                            </div>
+                        </details>
+                    {{end}}
+                {{end}}
+            {{end}}
+
+
+            {{if $mutations}}
+                <h2>Mutations</h2>
+                {{range $mutations}}
+                    <h3 id="{{.Name}}">{{.Name}}</h3>
+                    {{if .Comment}}
+                        <span class="comment">{{.Comment}}</span>
+                    {{end}}
+
+                    <h4>Definition</h4>
+                    <table class="definition">
+                        <tr>
+                            <th>Return Type</th>
+                            <td>{{if .IsScalar}}{{.Type}}{{else}}<a href="#{{.Type}}">{{.Type}}</a>{{end}}</td>
+                        </tr>
+                        <tr>
+                            <th>Scalar</th>
+                            <td>{{if .IsScalar}}Yes{{else}}No{{end}}
+                        </tr>
+                        <tr>
+                            <th>Nullable</th>
+                            <td>{{if .IsNullable}}Yes{{else}}No{{end}}</td>
+                        </tr>
+                        <tr>
+                            <th>List</th>
+                            <td>{{if .IsList}}Yes{{else}}No{{end}}</td>
+                        </tr>
+                    </table>
+
+                    {{if .Parameters}}
+                        <h4>Parameters</h4>
+                        <table class="parameters">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>List?</th>
+                                    <th>Nullable?</th>
+                                </tr>
+                            </thead>
+                            {{range .Parameters}}
+                            <tbody>
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                    <td>{{if .IsScalar}}{{.Type}}{{else}}<a href="#{{.Type}}">{{.Type}}</a>{{end}}</td>
+                                    <td>{{if .IsList}}Yes{{else}}No{{end}}</td>
+                                    <td>{{if .IsNullable}}Yes{{else}}No{{end}}</td>
+                                </tr>
+                            </tbody>
+                            {{end}}
+                        </table>
+                    {{end}}
+
+                    {{if or .Example.Request .Example.Response}}
+                        <h4>Example</h4>
+                        <details>
+                            <summary>Request and response</summary>
+                            <div class="example">
+                                <div>
+                                    <pre>
+{{.Example.Request}}
+                                    </pre>
+                                </div>
+                                <div>
+                                    <pre>
+{{.Example.Response}}
+                                    </pre>
+                                </div>
+                            </div>
+                        </details>
+                    {{end}}
+                {{end}}
+            {{end}}
+
+            
+            {{$definitions := .Definitions}}
+            {{if $definitions}}
+                <h2>Types</h2>
+                {{range $definitions}}
+                    <h3 id="{{.Name}}">{{.Name}} <code>({{.Variant}})</code></h3>
+                    {{if .Comment}}
+                        <span class="comment">{{.Comment}}</span>
+                    {{end}}
+
+                    {{if or (eq .Variant "Union") (eq .Variant "Enum")}}
+                        <table class="properties">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .Properties}}
+                                    <tr>
+                                        <td>{{.Name}}</td>
+                                        <td>{{.Comment}}</td>
+                                    </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    {{else}}
+                        <table class="properties">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Scalar</th>
+                                    <th>Nullable</th>
+                                    <th>List</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .Properties}}
+                                    <tr>
+                                        <td>{{.Name}}</td>
+                                        <td>{{if .IsScalar}}{{.Type}}{{else}}<a href="#{{.Type}}">{{.Type}}</a>{{end}}</td>
+                                        <td>{{if .IsScalar}}Yes{{else}}No{{end}}</td>
+                                        <td>{{if .IsNullable}}Yes{{else}}No{{end}}</td>
+                                        <td>{{if .IsList}}Yes{{else}}No{{end}}</td>
+                                        <td>{{.Comment}}</td>
+                                    </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    {{end}}
+                {{end}}
+            {{end}}
+        </div>
+    </body>
+</html>

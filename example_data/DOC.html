@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>test</title>
+        <style>
+            body {
+                color: rgb(14, 17, 17);
+            }
+            #main {
+                margin: 0 auto;
+                width: 50%;
+                padding-bottom: 2em;
+            }
+            h2 {
+                margin-top: 3em;
+                margin-bottom: 0em;
+            }
+            h3 {
+                margin-top: 3em;
+            }
+            #toc {
+                position: fixed;
+                border: solid rgba(14, 17, 17, 0.25);
+                background-color: rgba(14, 17, 17, 0.05);
+                border-radius: 5%;
+                border-width: 1px;
+                padding: 2em;
+                padding-top: 0.5em;
+                margin-left: 1em;
+                max-width: 15%;
+            }
+            #toc .list {
+                padding-left: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            #toc li {
+                margin-top: 0.7em;
+                margin-bottom: 0.7em;
+            }
+            #toc h3 {
+                margin-top: 1em;
+            }
+            #toc b {
+                margin-top: 1em;
+            }
+            a {
+                color: rgb(14, 17, 17);
+            }
+            a:hover {
+                font-weight: 600;
+            }
+            a:active {
+                color: #FFF;
+            }
+            .comment {
+                font-style: italic;
+                color: rgba(14, 17, 17, 0.5);
+                font-size: small;
+            }
+            .definition th {
+                text-align: left;
+                font-weight: 500;
+                padding-bottom: 1em;
+            }
+            .definition td {
+                padding-left: 1em;
+                padding-bottom: 1em;
+            }
+            .parameters, .properties {
+                table-layout: fixed;
+                width: 100%;
+                border-collapse: collapse;
+                border-radius: 5%;
+            }
+            .properties {
+                margin-top: 1em;
+            }
+            .parameters th, .properties th {
+                text-align: left;
+                background-color: rgba(14, 17, 17, 0.1);
+            }
+            .parameters thead th:nth-child(1) {
+                width: 30%;
+            }
+            .parameters thead th:nth-child(2) {
+                width: 40%;
+            }
+            .parameters thead th:nth-child(3) {
+                width: 15%;
+            }
+            .parameters thead th:nth-child(4) {
+                width: 15%;
+            }
+            .parameters th, .parameters td, .properties th, .properties td {
+                padding: 20px;
+            }
+            .parameters tbody tr:nth-child(odd), .properties tbody tr:nth-child(odd) {
+                background-color: rgba(14, 17, 17, 0.01);
+            }
+            .parameters tbody tr:nth-child(even), .properties tbody tr:nth-child(even) {
+                background-color: rgba(14, 17, 17, 0.05);
+            }
+            .properties thead th:nth-child(1) {
+                width: 15%;
+            }
+            .properties thead th:nth-child(2) {
+                width: 35%;
+            }
+            .properties thead th:nth-child(3) {
+                width: 7%;
+            }
+            .properties thead th:nth-child(4) {
+                width: 8%;
+            }
+            .properties thead th:nth-child(5) {
+                width: 7%;
+            }
+            .properties thead th:nth-child(6) {
+                width: 25%;
+            }
+            .example {
+                display: flex;
+            }
+            .example div {
+                flex: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="toc">
+            <h3>Contents</h3>
+            
+            
+                <b>Queries</b>
+                <ul class="list">
+                    
+                        <li><a href="#getImages">getImages</a></li>
+                    
+                </ul>
+            
+
+            
+            
+        </div>
+        <div id="main">
+            <h1>gqlDocumentation GQL Documentations</h1>
+            
+
+            
+                <h2>Queries</h2>
+                
+                    <h3 id="getImages">getImages</h3>
+                    
+
+                    <h4>Definition</h4>
+                    <table class="definition">
+                        <tr>
+                            <th>Return Type</th>
+                            <td><a href="#Images">Images</a></td>
+                        </tr>
+                        <tr>
+                            <th>Scalar</th>
+                            <td>No
+                        </tr>
+                        <tr>
+                            <th>Nullable</th>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <th>List</th>
+                            <td>No</td>
+                        </tr>
+                    </table>
+
+                    
+                        <h4>Parameters</h4>
+                        <table class="parameters">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>List?</th>
+                                    <th>Nullable?</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>Int</td>
+                                    <td>Yes</td>
+                                    <td>No</td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
+                    
+
+                    
+                        <h4>Example</h4>
+                        <details>
+                            <summary>Request and response</summary>
+                            <div class="example">
+                                <div>
+                                    <pre>
+getImages (
+	id: [
+		1
+	]
+) {
+	data 
+ }
+
+                                    </pre>
+                                </div>
+                                <div>
+                                    <pre>
+{
+	"getImages": {
+		"data": [
+			"Hello"
+		]
+	}
+}
+                                    </pre>
+                                </div>
+                            </div>
+                        </details>
+                    
+                
+            
+
+
+            
+
+            
+            
+            
+                <h2>Types</h2>
+                
+                    <h3 id="Images">Images <code>(Object)</code></h3>
+                    
+                        <span class="comment">Query to get user images by ID</span>
+                    
+
+                    
+                        <table class="properties">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Scalar</th>
+                                    <th>Nullable</th>
+                                    <th>List</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                    <tr>
+                                        <td>data</td>
+                                        <td>String</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                        <td></td>
+                                    </tr>
+                                
+                            </tbody>
+                        </table>
+                    
+                
+                    <h3 id="Data">Data <code>(Input)</code></h3>
+                    
+                        <span class="comment">Data of given image</span>
+                    
+
+                    
+                        <table class="properties">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Scalar</th>
+                                    <th>Nullable</th>
+                                    <th>List</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                    <tr>
+                                        <td>image</td>
+                                        <td>String</td>
+                                        <td>Yes</td>
+                                        <td>No</td>
+                                        <td>No</td>
+                                        <td>Image of given data</td>
+                                    </tr>
+                                
+                            </tbody>
+                        </table>
+                    
+                
+                    <h3 id="Compression">Compression <code>(Enum)</code></h3>
+                    
+                        <span class="comment">Compression enumeration</span>
+                    
+
+                    
+                        <table class="properties">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                    <tr>
+                                        <td>HOT</td>
+                                        <td>Not cold</td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td>COLD</td>
+                                        <td>Not hot</td>
+                                    </tr>
+                                
+                            </tbody>
+                        </table>
+                    
+                
+                    <h3 id="ImageQuery">ImageQuery <code>(Union)</code></h3>
+                    
+                        <span class="comment">ImageQuery type</span>
+                    
+
+                    
+                        <table class="properties">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                    <tr>
+                                        <td>Min</td>
+                                        <td></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td>Meta</td>
+                                        <td></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td>Complete</td>
+                                        <td></td>
+                                    </tr>
+                                
+                            </tbody>
+                        </table>
+                    
+                
+            
+        </div>
+    </body>
+</html>

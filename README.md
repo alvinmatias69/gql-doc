@@ -12,29 +12,26 @@ gql-doc project is developed using `go 1.13.5`. It's possible to use in another 
 
 ## Usage
 ```sh
-gql-doc [-help] [-ip] [-out] [-template]
+Usage:
+	gql-doc [--help | -h] [--quiet | -q] [--no-example] [--input | -i] [--output | -o] [--template] [--type]
 
 Options:
-        -help           Show help screen
+	--help	 -h		Show help message
+	--input	 -i		Set input search path [default: "./"]
+	--output -o		Set output file, on empty will return to stdout [default: ""]
+	--quiet	 -q		Set log verbosity to silent
+	--template		Set template, if path provided it will use custom template ["json"|"markdown"|"html"|"confluence", default: "json"]
+	--type			Set gql types to be generated separated by comma [default: "query,mutation"]
+	--no-example    Do not generate example for generated docs
 
-        -ip             Set input search path, should include 
-                        `queries.go` and `mutations.go`
-                        [ default: "./" ]
-
-        -out            Set documentation output path
-                        on empty the generated docs will be print to stdout
-                        [ default: "" ]
-
-        -template       Use template for documentation
-                        supply path to use custom template
-                        [ html | markdown | default: json ]
-
-Example:
-        gqldoc -ip=affiliate -out=doc.json
-        gqldoc -ip=affiliate -out=doc.md -template=custom-md.tmpl
+Examples:
+	- Generate docs from directory "./example/" and generate it to file "doc.json"
+	  $ gql-doc -i example -o doc.json
+	- Generate docs with custom template from "./custom-template.md"
+	  $ gql-doc -i example -o doc.md --template custom-template.md
 ```
 
-For more example on specs file and generated output you can refer to [example](example/) directory.
+For more example on specs file and generated output you can refer to [example](example_data) directory.
 
 ## GraphQL Specs
 
@@ -63,4 +60,3 @@ Templates are written in golang [template](https://golang.org/pkg/text/template/
 ## TODO
 - [ ] Tidy up functions and go comment
 - [ ] Add ability to read custom query and mutation files
-- [ ] Improve default template visually

@@ -5,55 +5,57 @@ import (
 	"testing"
 
 	"github.com/alvinmatias69/gql-doc/entity"
+	"github.com/alvinmatias69/gql-doc/parser/extractor"
+	"github.com/alvinmatias69/gql-doc/parser/matcher"
 )
 
-func Test_parse(t *testing.T) {
+func TestParser_parse(t *testing.T) {
+	type fields struct {
+		searchPath string
+	}
 	type args struct {
-		path string
+		docType entity.DocType
 	}
 	tests := []struct {
 		name    string
+		fields  fields
 		args    args
-		want    entity.Doc
+		want    entity.Spec
 		wantErr bool
 	}{
 		{
-			name: "failure on file not found",
-			args: args{
-				path: "./test_data/hel",
+			name: "success parse package name",
+			fields: fields{
+				searchPath: "./test_data/package",
 			},
-			wantErr: true,
-		},
-		{
-			name: "success read package name",
 			args: args{
-				path: "./test_data/package",
+				docType: entity.Query,
 			},
-			want: entity.Doc{
-				Name: "test_data",
+			want: entity.Spec{
+				Name: "test_package",
 			},
 		},
 		{
-			name: "success read function",
-			args: args{
-				path: "./test_data/function",
+			name: "success parse union",
+			fields: fields{
+				searchPath: "./test_data/union",
 			},
-			want: entity.Doc{
-				Name: "test_data",
-				Functions: []entity.Function{
+			args: args{
+				docType: entity.Query,
+			},
+			want: entity.Spec{
+				Name: "test_union",
+				Definitions: []entity.Definition{
 					{
-						Name:       "getProduct",
-						ReturnType: "Product",
-						Parameters: []entity.Parameter{
+						Name:    "TestUnion",
+						Variant: entity.Union,
+						Comment: "this is comment",
+						Properties: []entity.Property{
 							{
-								Name:          "limit",
-								ParamType:     "Int",
-								IsBuiltInType: true,
+								Name: "First",
 							},
 							{
-								Name:          "nextCursor",
-								ParamType:     "String",
-								IsBuiltInType: true,
+								Name: "Second",
 							},
 						},
 					},
@@ -61,26 +63,26 @@ func Test_parse(t *testing.T) {
 			},
 		},
 		{
-			name: "success read types",
-			args: args{
-				path: "./test_data/var_type",
+			name: "success parse function",
+			fields: fields{
+				searchPath: "./test_data/function",
 			},
-			want: entity.Doc{
-				Name: "test_data",
-				Types: []entity.VarType{
+			args: args{
+				docType: entity.Query,
+			},
+			want: entity.Spec{
+				Name: "test_function",
+				Queries: []entity.Property{
 					{
-						Name: "Response",
-						Parameters: []entity.Parameter{
+						Name:       "getProfile",
+						Comment:    "get profile by name",
+						Type:       "Profile",
+						IsNullable: true,
+						Parameters: []entity.Property{
 							{
-								Name:          "success",
-								ParamType:     "Boolean",
-								IsBuiltInType: true,
-								IsMandatory:   true,
-							},
-							{
-								Name:          "error",
-								ParamType:     "String",
-								IsBuiltInType: true,
+								Name:     "name",
+								Type:     "String",
+								IsScalar: true,
 							},
 						},
 					},
@@ -88,112 +90,38 @@ func Test_parse(t *testing.T) {
 			},
 		},
 		{
-			name: "success read types and functions",
+			name: "success parse object",
+			fields: fields{
+				searchPath: "./test_data/object",
+			},
 			args: args{
-				path: "./test_data/fn_and_type",
+				docType: entity.Query,
 			},
-			want: entity.Doc{
-				Name: "test_data",
-				Functions: []entity.Function{
-					{
-						Name: "register",
-						Parameters: []entity.Parameter{
-							{
-								Name:          "name",
-								ParamType:     "String",
-								IsBuiltInType: true,
-								IsMandatory:   true,
-							},
-						},
-						ReturnType: "Response",
-					},
-				},
-				Types: []entity.VarType{
-					{
-						Name: "Response",
-						Parameters: []entity.Parameter{
-							{
-								Name:          "success",
-								ParamType:     "Boolean",
-								IsBuiltInType: true,
-								IsMandatory:   true,
-							},
-							{
-								Name:          "error",
-								ParamType:     "String",
-								IsBuiltInType: true,
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "success read comment",
-			args: args{
-				path: "./test_data/complete",
-			},
-			want: entity.Doc{
-				Name: "test_data",
-				Functions: []entity.Function{
-					{
-						Name: "register",
-						Parameters: []entity.Parameter{
-							{
-								Name:          "name",
-								ParamType:     "String",
-								IsBuiltInType: true,
-								IsMandatory:   true,
-							},
-						},
-						ReturnType: "Response",
-						Comment:    "register new user",
-					},
-				},
-				Types: []entity.VarType{
+			want: entity.Spec{
+				Name: "test_object",
+				Definitions: []entity.Definition{
 					{
 						Name:    "Response",
-						Comment: "Response given after register new user",
-						Parameters: []entity.Parameter{
+						Comment: "response data",
+						Variant: entity.Object,
+						Properties: []entity.Property{
 							{
-								Name:          "success",
-								ParamType:     "Boolean",
-								IsBuiltInType: true,
-								IsMandatory:   true,
-								Comment:       "success indicate register result",
+								Name:       "name",
+								Type:       "String",
+								IsNullable: true,
+								IsScalar:   true,
 							},
 							{
-								Name:          "error",
-								ParamType:     "String",
-								IsBuiltInType: true,
-								Comment:       "error defines error message on failed register",
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "success read input",
-			args: args{
-				path: "./test_data/input_type",
-			},
-			want: entity.Doc{
-				Name: "test_data",
-				Types: []entity.VarType{
-					{
-						Name: "Response",
-						Parameters: []entity.Parameter{
-							{
-								Name:          "success",
-								ParamType:     "Boolean",
-								IsBuiltInType: true,
-								IsMandatory:   true,
+								Name:     "age",
+								Type:     "Int",
+								IsScalar: true,
 							},
 							{
-								Name:          "error",
-								ParamType:     "String",
-								IsBuiltInType: true,
+								Name:       "groupID",
+								Type:       "Int",
+								IsScalar:   true,
+								IsList:     true,
+								IsNullable: true,
 							},
 						},
 					},
@@ -201,23 +129,38 @@ func Test_parse(t *testing.T) {
 			},
 		},
 		{
-			name: "success read enum",
-			args: args{
-				path: "./test_data/enum_type",
+			name: "success parse interface",
+			fields: fields{
+				searchPath: "./test_data/interface",
 			},
-			want: entity.Doc{
-				Name: "test_data",
-				Types: []entity.VarType{
+			args: args{
+				docType: entity.Query,
+			},
+			want: entity.Spec{
+				Name: "test_interface",
+				Definitions: []entity.Definition{
 					{
-						Name: "Response",
-						Parameters: []entity.Parameter{
+						Name:    "Response",
+						Comment: "response data",
+						Variant: entity.Interface,
+						Properties: []entity.Property{
 							{
-								Name:    "SUCCESS",
-								Comment: "SUCCESS response",
+								Name:       "name",
+								Type:       "String",
+								IsNullable: true,
+								IsScalar:   true,
 							},
 							{
-								Name:    "FAILURE",
-								Comment: "FAILURE response",
+								Name:     "age",
+								Type:     "Int",
+								IsScalar: true,
+							},
+							{
+								Name:       "groupID",
+								Type:       "Int",
+								IsScalar:   true,
+								IsList:     true,
+								IsNullable: true,
 							},
 						},
 					},
@@ -225,23 +168,26 @@ func Test_parse(t *testing.T) {
 			},
 		},
 		{
-			name: "success read enum with underscore",
-			args: args{
-				path: "./test_data/enum_with_underscore_type",
+			name: "success parse enum",
+			fields: fields{
+				searchPath: "./test_data/enum",
 			},
-			want: entity.Doc{
-				Name: "test_data",
-				Types: []entity.VarType{
+			args: args{
+				docType: entity.Query,
+			},
+			want: entity.Spec{
+				Name: "test_enum",
+				Definitions: []entity.Definition{
 					{
-						Name: "Response",
-						Parameters: []entity.Parameter{
+						Name:    "Response",
+						Comment: "response data",
+						Variant: entity.Enum,
+						Properties: []entity.Property{
 							{
-								Name:    "SUCCESS_RESPONSE",
-								Comment: "SUCCESS response",
+								Name: "SUCCESS",
 							},
 							{
-								Name:    "FAILURE_RESPONSE",
-								Comment: "FAILURE response",
+								Name: "FAILURE",
 							},
 						},
 					},
@@ -249,25 +195,106 @@ func Test_parse(t *testing.T) {
 			},
 		},
 		{
-			name: "success read union",
-			args: args{
-				path: "./test_data/union",
+			name: "success parse complete",
+			fields: fields{
+				searchPath: "./test_data/complete",
 			},
-			want: entity.Doc{
-				Name: "test_data",
-				Types: []entity.VarType{
+			args: args{
+				docType: entity.Query,
+			},
+			want: entity.Spec{
+				Name: "test_complete",
+				Queries: []entity.Property{
 					{
-						Name:    "ImageQuery",
-						Comment: "union ansemble",
-						Parameters: []entity.Parameter{
+						Name:    "getProfile",
+						Comment: "get profile by name",
+						Type:    "Profile",
+						Parameters: []entity.Property{
 							{
-								Name: "min",
+								Name:     "name",
+								Type:     "String",
+								IsScalar: true,
+							},
+						},
+						IsNullable: true,
+					},
+				},
+				Definitions: []entity.Definition{
+					{
+						Name:    "Response",
+						Comment: "response data",
+						Variant: entity.Object,
+						Properties: []entity.Property{
+							{
+								Name:       "name",
+								Type:       "String",
+								IsNullable: true,
+								IsScalar:   true,
 							},
 							{
-								Name: "meta",
+								Name:     "age",
+								Type:     "Int",
+								IsScalar: true,
 							},
 							{
-								Name: "complete",
+								Name:       "groupID",
+								Type:       "Int",
+								IsNullable: true,
+								IsScalar:   true,
+								IsList:     true,
+							},
+						},
+					},
+					{
+						Name:    "Input",
+						Comment: "input data",
+						Variant: entity.Input,
+						Properties: []entity.Property{
+							{
+								Name:     "name",
+								Type:     "String",
+								IsScalar: true,
+							},
+						},
+					},
+					{
+						Name:    "ResponseType",
+						Comment: "response type variant",
+						Variant: entity.Enum,
+						Properties: []entity.Property{
+							{
+								Name: "SUCCESS",
+							},
+							{
+								Name: "FAILURE",
+							},
+						},
+					},
+					{
+						Name:    "SomeItf",
+						Comment: "some interface",
+						Variant: entity.Interface,
+						Properties: []entity.Property{
+							{
+								Name:     "name",
+								Type:     "String",
+								IsScalar: true,
+							},
+						},
+					},
+					{
+						Name:    "Dragon",
+						Comment: "XYZ dragon union",
+						Variant: entity.Union,
+						Properties: []entity.Property{
+							{
+								Name: "X",
+							},
+							{
+								Name: "Y",
+							},
+							{
+								Name: "Z",
 							},
 						},
 					},
@@ -277,13 +304,18 @@ func Test_parse(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Parse(tt.args.path)
+			p := &Parser{
+				searchPath: tt.fields.searchPath,
+				matcher:    matcher.New(),
+				extractor:  extractor.New(),
+			}
+			got, err := p.parse(tt.args.docType)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("parse() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Parser.parse() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("\nparse() =\t%+v\nwant =\t\t%+v\n", got, tt.want)
+				t.Errorf("Parser.parse() =\n%+v,\nwant\n%+v", got, tt.want)
 			}
 		})
 	}

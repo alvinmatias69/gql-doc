@@ -1,0 +1,174 @@
+# {{.Name}}
+
+<details>
+<summary>Table of Contents</summary>
+
+{{$queries := .Queries}}
+{{if $queries}}
+### Queries
+{{range $queries}}
+* [{{.Name}}](#{{.Name}})
+{{end}}
+{{end}}
+
+{{$mutations := .Mutations}}
+{{if $mutations}}
+### Mutations
+{{range $mutations}}
+* [{{.Name}}](#{{.Name}})
+{{end}}
+{{end}}
+
+{{$definitions := .Definitions}}
+{{if $definitions}}
+### Types
+{{range $definitions}}
+* [{{.Name}}](#{{.Name}})
+{{end}}
+{{end}}
+
+</details>
+
+{{if $queries}}
+## Queries
+
+{{range $queries}}
+
+### {{.Name}}
+{{if .Comment}}
+_{{.Comment}}_
+{{end}}
+
+#### Definition
+<table>
+    <tr>
+        <th>Return Type</th>
+        <td>{{if .IsScalar}}{{.Type}}{{else}}<a href="#{{.Type}}">{{.Type}}</a>{{end}}</td>
+    </tr>
+    <tr>
+        <th>Scalar</th>
+        <td>{{if .IsScalar}}Yes{{else}}No{{end}}
+    </tr>
+    <tr>
+        <th>Nullable</th>
+        <td>{{if .IsNullable}}Yes{{else}}No{{end}}</td>
+    </tr>
+    <tr>
+        <th>List</th>
+        <td>{{if .IsList}}Yes{{else}}No{{end}}</td>
+    </tr>
+</table>
+
+#### Parameters
+Name|Type|List?|Nullable?
+----|----|-----|---------{{range .Parameters}}
+{{.Name}}|{{if .IsScalar}}{{.Type}}{{else}}[{{.Type}}](#{{.Type}}){{end}}|{{if .IsList}}Yes{{else}}No{{end}}|{{if .IsNullable}}Yes{{else}}No{{end}}{{end}}
+
+{{if or .Example.Request .Example.Response}}
+#### Example
+
+<details>
+<summary>Request</summary>
+
+```
+{{.Example.Request}}
+```
+
+</details>
+
+<details>
+<summary>Response</summary>
+
+```json
+{{.Example.Response}}
+```
+
+</details>
+{{end}}
+
+{{end}}
+{{end}}
+
+{{if $mutations}}
+## Mutations
+
+{{range $mutations}}
+
+### {{.Name}}
+{{if .Comment}}
+_{{.Comment}}_
+{{end}}
+
+#### Definition
+<table>
+    <tr>
+        <th>Return Type</th>
+        <td>{{if .IsScalar}}{{.Type}}{{else}}<a href="#{{.Type}}">{{.Type}}</a>{{end}}</td>
+    </tr>
+    <tr>
+        <th>Scalar</th>
+        <td>{{if .IsScalar}}Yes{{else}}No{{end}}
+    </tr>
+    <tr>
+        <th>Nullable</th>
+        <td>{{if .IsNullable}}Yes{{else}}No{{end}}</td>
+    </tr>
+    <tr>
+        <th>List</th>
+        <td>{{if .IsList}}Yes{{else}}No{{end}}</td>
+    </tr>
+</table>
+
+#### Parameters
+Name|Type|List?|Nullable?
+----|----|-----|---------{{range .Parameters}}
+{{.Name}}|{{if .IsScalar}}{{.Type}}{{else}}[{{.Type}}](#{{.Type}}){{end}}|{{if .IsList}}Yes{{else}}No{{end}}|{{if .IsNullable}}Yes{{else}}No{{end}}{{end}}
+
+{{if or .Example.Request .Example.Response}}
+#### Example
+
+<details>
+<summary>Request</summary>
+
+```
+{{.Example.Request}}
+```
+
+</details>
+
+<details>
+<summary>Response</summary>
+
+```json
+{{.Example.Response}}
+```
+
+</details>
+{{end}}
+
+{{end}}
+{{end}}
+
+{{if $definitions}}
+## Types
+
+{{range $definitions}}
+### {{.Name}}
+{{if .Comment}}
+_{{.Comment}}_
+{{end}}
+
+**Variant:** `{{.Variant}}`
+
+#### Properties
+{{if or (eq .Variant "Union") (eq .Variant "Enum")}}
+Name|Description
+----|-----------{{range .Properties}}
+{{.Name}}|{{.Comment}}{{end}}
+{{else}}
+Name|Type|Scalar|Nullable|List|Description
+----|----|------|--------|----|-----------{{range .Properties}}
+{{.Name}}|{{if .IsScalar}}{{.Type}}{{else}}[{{.Type}}](#{{.Type}}){{end}}|{{if .IsScalar}}Yes{{else}}No{{end}}|{{if .IsNullable}}Yes{{else}}No{{end}}|{{if .IsList}}Yes{{else}}No{{end}}|{{.Comment}} |{{end}}{{end}}
+
+{{end}}
+{{end}}
