@@ -4,11 +4,27 @@ Simple tools for generating documentation from graphQL Specs
 
 ## Installation
 
-```sh
-$ go get github.com/alvinmatias69/gql-doc
+### From Source
+gql-doc project is developed using `go 1.13.5`. It's possible to use in another go version, but there's no guarantee that it will works as expected.
+
+``` sh
+# clone to your local machine
+$ git clone git@github.com:alvinmatias69/gql-doc.git
+
+# download dependencies and build the binary file
+$ make
+
+# install the binary and required files to PATH (requires superuser privileges)
+$ make install
 ```
 
-gql-doc project is developed using `go 1.13.5`. It's possible to use in another go version, but there's no guarantee that it will works as expected.
+#### Removal
+If you don't want gql-doc installed on your machine anymore you can use below command to cleanly remove gql-doc from your machine.
+
+``` sh
+$ make remove
+```
+
 
 ## Usage
 ```sh
