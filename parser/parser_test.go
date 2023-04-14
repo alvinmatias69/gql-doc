@@ -90,6 +90,26 @@ func TestParser_parse(t *testing.T) {
 			},
 		},
 		{
+			name: "success parse empty function",
+			fields: fields{
+				searchPath: "./test_data/function_empty",
+			},
+			args: args{
+				docType: entity.Query,
+			},
+			want: entity.Spec{
+				Name: "test_function",
+				Queries: []entity.Property{
+					{
+						Name:       "getProfile",
+						Comment:    "get profile by name",
+						Type:       "Profile",
+						IsNullable: true,
+					},
+				},
+			},
+		},
+		{
 			name: "success parse object",
 			fields: fields{
 				searchPath: "./test_data/object",

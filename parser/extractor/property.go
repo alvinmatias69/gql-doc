@@ -15,7 +15,7 @@ func (e *Extractor) Property(input string) (entity.Property, error) {
 
 	var parameters []entity.Property
 	name := input[:index]
-	if strings.Contains(name, "(") {
+	if !strings.Contains(name, "()") && strings.Contains(name, "(") {
 		paramString := e.propertyParams.FindString(name)
 		paramString = strings.Trim(paramString, `()`)
 		params := strings.Split(paramString, ",")
@@ -41,7 +41,7 @@ func (e *Extractor) Property(input string) (entity.Property, error) {
 	prop := extractPropTypes(input[index+1:])
 
 	return entity.Property{
-		Name:       strings.TrimSpace(name),
+		Name:       strings.ReplaceAll(strings.TrimSpace(name), "()", ""),
 		Type:       prop.Name,
 		IsScalar:   prop.IsScalar,
 		IsNullable: prop.IsNullable,
